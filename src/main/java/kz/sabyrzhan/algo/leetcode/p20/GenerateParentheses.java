@@ -2,6 +2,10 @@ package kz.sabyrzhan.algo.leetcode.p20;
 
 import java.util.*;
 
+/**
+ * Backtracking algorithm.
+ * TODO: Refactor to DFS algorithm
+ */
 public class GenerateParentheses {
     public static void main(String[] args) {
         GenerateParentheses p = new GenerateParentheses();
