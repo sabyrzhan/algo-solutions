@@ -3,7 +3,7 @@ package kz.sabyrzhan.algo.leetcode.p20;
 import java.util.*;
 
 /**
- * Backtracking algorithm.
+ * Backtracking technique.
  * TODO: Refactor to DFS algorithm
  */
 public class GenerateParentheses {
