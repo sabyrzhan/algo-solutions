@@ -68,6 +68,10 @@ public class DivideTwoIntegers {
             }
         }
 
+        /*
+        The subtract method is needed, because c+=-1 or c+=1 operators are time consuming.
+        It is better to subtract explicitly.
+         */
         private int subtractOrAdd(int dividend, int divisor, int count) {
             if((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)) {
                 return count - 1;
