@@ -1,4 +1,4 @@
-package kz.sabyrzhan.algo.hackerrank.java.data_structures;
+package kz.sabyrzhan.algo.hackerrank.java.data_structures.stacks;
 
 import java.util.Scanner;
 import java.util.Stack;
