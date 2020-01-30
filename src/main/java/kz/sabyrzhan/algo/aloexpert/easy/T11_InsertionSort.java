@@ -15,11 +15,9 @@ public class T11_InsertionSort {
             for(int i = 1; i < array.length; i++) {
                 for(int j = i; j > 0; j--) {
                     if(array[j - 1] > array[j]) {
-                        System.out.print("Before: " + Arrays.toString(array));
                         tmp = array[j - 1];
                         array[j - 1] = array[j];
                         array[j] = tmp;
-                        System.out.println(" After: " + Arrays.toString(array) + ", Swap: " + array[j - 1] + " : " + array[j]);
                     }
                 }
             }
