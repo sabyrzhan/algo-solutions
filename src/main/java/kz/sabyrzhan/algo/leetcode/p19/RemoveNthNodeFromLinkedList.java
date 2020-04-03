@@ -1,64 +1,57 @@
 package kz.sabyrzhan.algo.leetcode.p19;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RemoveNthNodeFromLinkedList {
     public static void main(String[] args) {
         RemoveNthNodeFromLinkedList m = new RemoveNthNodeFromLinkedList();
-        int [] values = new int[] {1};
-        ListNode root = m.new ListNode(values[0]);
+        m.execute();
+    }
+
+    private void execute() {
+        int n = 5;
+        int k = 5;
+        ListNode root = new ListNode(1);
         ListNode listNode = root;
-        for(int i = 1; i < values.length; i++) {
-            listNode.next = m.new ListNode(values[i]);
+        for(int i = 2; i <= n; i++) {
+            listNode.next = new ListNode(i);
             listNode = listNode.next;
         }
 
-        Solution solution = m.new Solution();
-        ListNode head = solution.removeNthFromEnd(root, 1);
+        Solution solution = new Solution();
+        ListNode head = solution.removeNthFromEnd(root, k);
         System.out.println(head);
-    }
-
-    class Solution {
-        public ListNode removeNthFromEnd(ListNode head, int n) {
-            List<ListNode> containers = new ArrayList<>();
-            ListNode listNode = new ListNode(head.val);
-            while(head.next != null) {
-                listNode.next = new ListNode(head.next.val);
-                containers.add(listNode);
-                listNode = listNode.next;
-                head = head.next;
-            }
-            containers.add(listNode);
-            if(containers.size() == 1) {
-                return null;
-            }
-
-            int preFoundIndex = containers.size() - n - 1;
-            int postFoundIndex = containers.size() - n + 1;
-
-            ListNode result;
-            if(preFoundIndex >= 0 && postFoundIndex < containers.size()) {
-                ListNode preFound = containers.get(preFoundIndex);
-                ListNode postFound = containers.get(postFoundIndex);
-                preFound.next = postFound;
-                result = containers.get(0);
-            } else if(preFoundIndex < 0) {
-                containers.get(0).next = null;
-                result = containers.get(postFoundIndex);
-            } else {
-                ListNode preFound = containers.get(preFoundIndex);
-                preFound.next = null;
-                result = containers.get(0);
-            }
-
-            return result;
-        }
     }
 
     public class ListNode {
         int val;
         ListNode next;
         ListNode(int x) { val = x; }
+
+        @Override
+        public String toString() {
+            return val + " -> " + next;
+        }
+    }
+
+    class Solution {
+        public ListNode removeNthFromEnd(ListNode head, int n) {
+            ListNode zero = new ListNode(0);
+            zero.next = head;
+
+            ListNode first = zero;
+            ListNode second = zero;
+
+            for(int i = 0; i <= n; i++) {
+                first = first.next;
+            }
+
+            while(first != null) {
+                first = first.next;
+                second = second.next;
+            }
+
+            second.next = second.next.next;
+
+            return zero.next;
+        }
     }
 }
