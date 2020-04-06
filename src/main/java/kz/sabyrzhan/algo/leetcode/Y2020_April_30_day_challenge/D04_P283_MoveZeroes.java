@@ -2,9 +2,9 @@ package kz.sabyrzhan.algo.leetcode.Y2020_April_30_day_challenge;
 
 import java.util.Arrays;
 
-public class D03_P283_MoveZeroes {
+public class D04_P283_MoveZeroes {
     public static void main(String[] args) {
-        D03_P283_MoveZeroes p = new D03_P283_MoveZeroes();
+        D04_P283_MoveZeroes p = new D04_P283_MoveZeroes();
         p.execute();
     }
 
