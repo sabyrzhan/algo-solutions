@@ -10,76 +10,75 @@ public class NQueensProblem {
 
     public void execute() {
         Solution s = new Solution();
-        s.solve(5);
+        s.solve(4);
     }
 
     public class Solution {
+        int i = 0;
+
         public void solve(int size) {
+            solveImperative(size);
+        }
+
+        public void solveImperative(int size) {
             int[][] board = new int[size][size];
 
-            int i = 0;
-            int j = 0;
             LinkedList<int[]> positions = new LinkedList<>();
-            while(j < board[0].length) {
-                while(i < board.length) {
-                    print(board);
-                    if(isClashing(j, i, board)) {
-                        int[] last = positions.pollLast();
-                        i = last[0] + 1;
-                        j = last[1] - 1;
-                        board[last[0]][last[1]] = 0;
-                        System.out.println("Printing clash: ");
-                        print(board);
+            for(int j = 0; j < board[0].length && i < board.length;) {
+                if (isClashingImperative(i, j, board)) {
+                    int[] prev = positions.pollLast();
+                    while(prev != null && prev[0] + 1 >= board.length) {
+                        board[prev[0]][prev[1]] = 0;
+                        prev = positions.pollLast();
+                    }
+                    if (prev == null) {
                         break;
                     }
-
+                    board[prev[0]][prev[1]] = 0;
+                    i = prev[0] + 1;
+                    j = prev[1];
+                } else {
                     board[i][j] = 1;
                     positions.add(new int[]{i,j});
-                    break;
+                    i = 0;
+                    j++;
                 }
-                j++;
             }
-            //solveRecurs(1, 0, board);
             print(board);
         }
 
-        public void solveRecurs(int row, int column, int[][] board) {
-            if (row >= board.length || column >= board[0].length) {
-                return;
-            }
-            if(isClashing(row,column, board)) {
-                board[row][column] = 0;
-                return;
+        private boolean isClashingImperative(int row, int column, int[][] board) {
+            if (row >= board.length) {
+                return true;
             }
 
-            for(int i = 0; i < board.length; i++) {
-                board[row][column] = 1;
-                solveRecurs(row+1, column, board);
-            }
-        }
-
-        private boolean isClashing(int row, int column, int[][] board) {
+            boolean result = false;
             for(int i = 0; i < board[0].length; i++) {
                 if(column != i && board[row][i] == 1) {
-                    return true;
+                    result = true;
+                    break;
                 }
             }
 
-            for(int i = row; i < board.length; i++) {
-                for (int j = column; j >= 0; j--) {
-                    if(i != row && column != j && board[i][j] == 1) {
-                        return true;
-                    }
+            for(int i = row, j = column; i < board.length && j >= 0; i++, j--) {
+                if(i != row && column != j && board[i][j] == 1) {
+                    result = true;
+                    break;
                 }
             }
 
-            for(int i = row; i >= 0; i--) {
-                for (int j = column; j >= 0; j--) {
-                    if(i != row && column != j && board[i][j] == 1) {
-                        return true;
-                    }
+            for(int i = row, j = column; i >= 0 && j >= 0; i--, j--) {
+                if(i != row && column != j && board[i][j] == 1) {
+                    result = true;
+                    break;
                 }
             }
+
+            if (result) {
+                return isClashingImperative(row + 1, column, board);
+            }
+
+            i = row;
 
             return false;
         }
