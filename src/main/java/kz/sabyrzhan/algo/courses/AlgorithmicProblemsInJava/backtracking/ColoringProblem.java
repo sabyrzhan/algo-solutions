@@ -27,7 +27,7 @@ public class ColoringProblem {
             int[][] colors = new int[length][length];
         }
 
-        private boolean solve(int position, boolean[][] states, int[] path, int[][] colors) {
+        private boolean solve(int position, int vertex, boolean[][] states, int[] path, int[][] colors) {
             if (position == states.length) {
                 int[] adjColors = getAdjsColors(position - 1, states, colors);
                 int nextColor;
@@ -36,8 +36,30 @@ public class ColoringProblem {
                 } else {
                     nextColor = 100;
                 }
-                colors[position - 1][]
+                colors[position - 1][vertex] = nextColor;
+                return true;
             }
+
+            for(int i = 1; i < states.length; i++) {
+                if (!isVisited(position, path)) {
+                    path[i] = i;
+                    if (solve(position + 1, vertex, states, path, colors)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private boolean isVisited(int elem, int[] path) {
+            for(int pathElem : path) {
+                if (elem == pathElem) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private int[] getAdjsColors(int elem, boolean[][] states, int[][] colors) {
