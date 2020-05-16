@@ -1,8 +1,6 @@
 package kz.sabyrzhan.algo.courses.AlgorithmicProblemsInJava.backtracking;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 public class ColoringProblem {
     public static void main(String[] args) {
@@ -13,10 +11,23 @@ public class ColoringProblem {
     public void execute() {
         Solution s = new Solution();
         boolean[][] states = new boolean[][] {
-                {false, true, false},
-                {true, false, true},
-                {false, true, false}
+                {false, true, true, true, false, false},
+                {true, false, true, false, true, true},
+                {true, true, false, true, true, false},
+                {true, false, true, false, true, false},
+                {false, true, true, true, false, true},
+                {false, true, false, false, true, false},
         };
+
+        /*boolean[][] states = new boolean[][] {
+                {false, true, false, true, false},
+                {true, false, true, true, false},
+                {false, true, false, true, false},
+                {true, true, true, false, true},
+                {false, false, false, true, false}
+        };*/
+
+
 
         s.solve(states.length, states);
     }
@@ -24,26 +35,26 @@ public class ColoringProblem {
     public class Solution {
 
         public void solve(int length, boolean[][] states) {
-            int[][] colors = new int[length][length];
+            int[] colors = new int[length];
+            colors[0] = 100;
+            int colorsLen = 3;
+            boolean result = solve(1, states, colors, colorsLen);
+            System.out.println(result);
         }
 
-        private boolean solve(int position, int vertex, boolean[][] states, int[] path, int[][] colors) {
+
+        // n * n  + n = n^2
+        private boolean solve(int position, boolean[][] states, int[] colors, int colorsLen) {
             if (position == states.length) {
-                int[] adjColors = getAdjsColors(position - 1, states, colors);
-                int nextColor;
-                if (adjColors.length != 0) {
-                    nextColor = adjColors[adjColors.length - 1] + 1;
-                } else {
-                    nextColor = 100;
-                }
-                colors[position - 1][vertex] = nextColor;
+                printPath(colors);
                 return true;
             }
 
-            for(int i = 1; i < states.length; i++) {
-                if (!isVisited(position, path)) {
-                    path[i] = i;
-                    if (solve(position + 1, vertex, states, path, colors)) {
+            for(int i = 0; i < colorsLen; i++) {
+                int nextColor = 100 + i;
+                if (isValidColor(states, position, nextColor, colors)) {
+                    colors[position] = nextColor;
+                    if (solve(position + 1, states, colors, colorsLen)) {
                         return true;
                     }
                 }
@@ -52,27 +63,19 @@ public class ColoringProblem {
             return false;
         }
 
-        private boolean isVisited(int elem, int[] path) {
-            for(int pathElem : path) {
-                if (elem == pathElem) {
-                    return true;
+        private boolean isValidColor(boolean[][] states, int elem, int elemColor, int[] colors) {
+            boolean result = true;
+            for(int i = 0; i < states.length; i++) {
+                if (states[elem][i] && colors[i] == elemColor) {
+                    result = false;
                 }
             }
 
-            return false;
+            return result;
         }
 
-        private int[] getAdjsColors(int elem, boolean[][] states, int[][] colors) {
-            List<Integer> values = new ArrayList<>();
-            for(int i = 0; i < states.length; i++) {
-                if (states[elem][i] && colors[elem][i] != 0) {
-                    values.add(colors[elem][i]);
-                }
-            }
-
-            Collections.sort(values);
-
-            return values.stream().mapToInt(Integer::intValue).toArray();
+        private void printPath(int[] path) {
+            System.out.println(Arrays.toString(path));
         }
     }
 }
