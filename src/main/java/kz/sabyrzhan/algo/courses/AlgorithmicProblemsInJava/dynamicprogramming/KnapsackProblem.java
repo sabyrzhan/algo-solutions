@@ -68,10 +68,12 @@ public class KnapsackProblem {
 
         private int[] getSumValues() {
             List<Integer> result = new ArrayList<>();
-            for(int i = values.length - 1, j = targetWeight; i > 0; i--) {
+            for(int i = values.length - 1, j = targetWeight; i > 0;) {
                 if (table[i][j] != 0 && table[i][j] != table[i -1][j]) {
                     result.add(values[i]);
                     j = j - weights[i];
+                } else {
+                    i--;
                 }
             }
 
