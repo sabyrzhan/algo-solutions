@@ -52,22 +52,27 @@ public class Merge2SortedList {
                 return result;
             }
 
-            ListNode l1next = null, l2next = null;
+            ListNode next1 = l1, next2 = l2;
 
-            if(l1 != null) {
-                l1next = l1.next;
-            }
-
-
-            if (l1.val > l2.val) {
-                result.next = l2;
-            } else {
+            if (l1 != null && l2 != null) {
+                if (l1.val > l2.val) {
+                    result.next = l2;
+                    next2 = l2.next;
+                } else {
+                    result.next = l1;
+                    next1 = l1.next;
+                }
+            } else if(l1 != null) {
                 result.next = l1;
+                next1 = l1.next;
+            } else {
+                result.next = l2;
+                next2 = l2.next;
             }
 
             result = result.next;
 
-            return mergeTwoLists(l1.next, l2.next);
+            return mergeTwoLists(next1, next2);
         }
     }
 }
