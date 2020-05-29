@@ -1,7 +1,5 @@
 package kz.sabyrzhan.algo.leetcode.Recursion1.CH3_Memoization;
 
-import java.util.Arrays;
-
 public class ClimbingStairs {
     public static void main(String[] args) {
         ClimbingStairs s = new ClimbingStairs();
@@ -10,41 +8,20 @@ public class ClimbingStairs {
     
     public void execute() {
         Solution s = new Solution();
-        int n = 2;
+        int n = 3;
         System.out.println(s.climbStairs(n));;
     }
 
     class Solution {
-        private int[] steps = {1,2};
-        private int n;
-        private int[][] table;
-
         public int climbStairs(int n) {
-            this.n = n;
-            this.table = new int[steps.length + 1][n + 1];
-            int result = climbStairs();
-            print();
-            return result;
-        }
-
-        public int climbStairs() {
-            for(int i = 1; i <= steps.length; i++) {
-                for(int j = 1; j <= n; j++) {
-                    if (steps[i - 1] <= j) {
-                        table[i][j] = table[i - 1][j] + table[i][j - steps[i - 1]];
-                    } else {
-                        table[i][j] = table[i - 1][j];
-                    }
-                }
+            int[] dp = new int[n + 1];
+            dp[0] = 1;
+            dp[1] = 1;
+            for(int i = 2; i <= n; i++) {
+                dp[i] = dp[i - 1] + dp[i - 2];
             }
 
-            return table[steps.length][n];
-        }
-
-        private void print() {
-            for(int i = 0; i < table.length; i++) {
-                System.out.println(Arrays.toString(table[i]));
-            }
+            return dp[n];
         }
     }
 }
