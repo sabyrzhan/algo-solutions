@@ -1,4 +1,4 @@
-package kz.sabyrzhan.algo.leetcode.Recursion1.CH4_ComplexityAnalysis;
+package kz.sabyrzhan.algo.leetcode.Recursion1.CH5_Conclusion;
 
 public class Merge2SortedList {
     public static void main(String[] args) {
