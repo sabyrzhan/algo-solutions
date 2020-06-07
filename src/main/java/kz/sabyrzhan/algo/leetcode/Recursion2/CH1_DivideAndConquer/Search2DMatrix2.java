@@ -1,7 +1,5 @@
 package kz.sabyrzhan.algo.leetcode.Recursion2.CH1_DivideAndConquer;
 
-import javax.imageio.ImageTranscoder;
-
 public class Search2DMatrix2 {
     public static void main(String[] args) {
         Search2DMatrix2 s = new Search2DMatrix2();
