@@ -50,4 +50,14 @@ class QueueTest {
         assertEquals(2, queue.head.getValue());
         assertEquals(3, queue.tail.getValue());
     }
+
+    @Test
+    public void poll_emptyNull() {
+        try {
+            queue.poll();
+            fail();
+        } catch (RuntimeException e) {
+            assertEquals("empty queue", e.getMessage());
+        }
+    }
 }
