@@ -82,4 +82,11 @@ class LRUTest {
 
         assertNull(result);
     }
+
+    @Test
+    public void get_emptyLru() {
+        NodeWithLeftAndRight result = lru.get(5);
+
+        assertNull(result);
+    }
 }
