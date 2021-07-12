@@ -89,4 +89,14 @@ class LRUTest {
 
         assertNull(result);
     }
+
+    @Test
+    public void get_capacity() {
+        lru = new LRU(1);
+        lru.add(1);
+        lru.add(2);
+
+        assertEquals(1, lru.cacheValues.size());
+        assertEquals(2, lru.cacheValues.get(0).getValue());
+    }
 }
