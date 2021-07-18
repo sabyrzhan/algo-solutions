@@ -1,53 +1,45 @@
 package kz.sabyrzhan.algo.leetcode.problems.p2;
 
 public class AddTwoNumbers {
-    public static void main(String[] args) {
-        AddTwoNumbers p = new AddTwoNumbers();
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if (l1 == null || l2 == null) {
+            throw new IllegalArgumentException("l1 and l2 cannot be null");
+        }
 
-        ListNode l1 = p.new ListNode(2);
-        l1.next = p.new ListNode(4);
-        l1.next.next = p.new ListNode(3);
+        ListNode dummy, result = new ListNode((l1.val + l2.val) % 10);
+        dummy = result;
+        int carry = (l1.val + l2.val) / 10;
+        l1 = l1.next;
+        l2 = l2.next;
+        while(l1 != null || l2 != null || carry != 0) {
+            int l1value = 0, l2value = 0;
+            if (l1 != null) {
+                l1value = l1.val;
+                l1 = l1.next;
+            }
 
-        ListNode l2 = p.new ListNode(5);
-        l2.next = p.new ListNode(6);
-        l2.next.next = p.new ListNode(4);
+            if (l2 != null) {
+                l2value = l2.val;
+                l2 = l2.next;
+            }
 
-        Solution solution = p.new Solution();
-        System.out.println(solution.addTwoNumbers(l1,l2));
+            int sum = l1value + l2value + carry;
+            result.next = new ListNode(sum % 10);
+            carry = sum / 10;
+            result = result.next;
+        }
+
+        return dummy;
     }
 
-    public class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
         ListNode(int x) { val = x; }
 
         @Override
         public String toString() {
-            return val + " -> " + next;
-        }
-    }
-
-    class Solution {
-        public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-            ListNode p, dummy = new ListNode(0);
-            p = dummy;
-            int carry = 0;
-            while(l1 != null ||  l2 != null || carry != 0) {
-                if (l1 != null) {
-                    carry += l1.val;
-                    l1 = l1.next;
-                }
-
-                if (l2 != null) {
-                    carry += l2.val;
-                    l2 = l2.next;
-                }
-                p.next = new ListNode(carry % 10);
-                carry /= 10;
-                p = p.next;
-            }
-
-            return dummy.next;
+            return val + "" + (next != null ? next : "");
         }
     }
 }
