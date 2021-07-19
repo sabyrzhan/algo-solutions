@@ -1,29 +1,15 @@
 package kz.sabyrzhan.algo.leetcode.problems.p7;
 
 public class ReverseInteger {
-    public static void main(String[] args) {
-        ReverseInteger p = new ReverseInteger();
-
-        int input = -123;
-
-        Solution solution = p.new Solution();
-        System.out.println(solution.reverse(input));
-    }
-
-    class Solution {
-        public int reverse(int x) {
-            int result = 0;
-            while( x != 0) {
-                int remain = x % 10;
-                int result2 = result * 10 + remain;
-                if ((result2 - remain) / 10 != result) {
-                    return 0;
-                }
-                result = result2;
-                x /= 10;
-            }
-
-            return result;
+    public int reverse(int x) {
+        long xx = x;
+        xx = xx * (x < 0 ? -1 : 1);
+        String rev = new StringBuilder("" + xx).reverse().toString();
+        long num = Long.parseLong(rev) * (x < 0 ? -1 : 1);
+        if (num > Integer.MAX_VALUE || num < Integer.MIN_VALUE) {
+            return 0;
+        } else {
+            return (int) num;
         }
     }
 }
