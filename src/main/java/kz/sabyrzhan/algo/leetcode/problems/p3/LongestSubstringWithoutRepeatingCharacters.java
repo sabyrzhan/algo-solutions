@@ -4,31 +4,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LongestSubstringWithoutRepeatingCharacters {
-    public static void main(String[] args) {
-        LongestSubstringWithoutRepeatingCharacters p = new LongestSubstringWithoutRepeatingCharacters();
-
-        String input = "abcabcbb";
-
-        Solution solution = p.new Solution();
-        System.out.println(solution.lengthOfLongestSubstring(input));
-    }
-
-    class Solution {
-        public int lengthOfLongestSubstring(String s) {
-            int max = 0;
-            int dupIndex = 0;
-            Map<Character, Integer> chars = new HashMap<>();
-            for(int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                if (chars.containsKey(c)) {
-                    dupIndex = Math.max(dupIndex, chars.get(c) + 1);
+    public int lengthOfLongestSubstring(String s) {
+        int len = 0, maxLen = 0;
+        Map<Character, Integer> visited = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            len = 0;
+            for (int j = i; j < s.length(); j++) {
+                if (visited.get(s.charAt(j)) != null) {
+                    break;
                 }
-
-                chars.put(c, i);
-                max = Math.max(max, i - dupIndex + 1);
+                visited.put(s.charAt(j), 1);
+                len++;
             }
 
-            return max;
+            if (len > maxLen) {
+                maxLen = len;
+            }
+            visited = new HashMap<>();
         }
+
+        return maxLen;
     }
 }
