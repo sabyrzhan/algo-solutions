@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 public class MinSubarrayLen {
     public int minSubArrayLen(int target, int[] nums) {
+        LinkedList<Integer> items = new LinkedList<>();
+
         Arrays.sort(nums);
         int last = nums.length % 2 == 0 ? nums.length / 2 - 1 : nums.length / 2;
         for(int i = 0, j = nums.length - 1; i < last; i++, j--) {
@@ -12,7 +14,7 @@ public class MinSubarrayLen {
             nums[i] = nums[j];
             nums[j] = tmp;
         }
-        LinkedList<Integer> items = new LinkedList<>();
+
         int sum = 0;
         int i = 0;
         int j = nums.length - 1;
