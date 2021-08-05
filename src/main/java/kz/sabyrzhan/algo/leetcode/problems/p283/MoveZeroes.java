@@ -5,14 +5,16 @@ public class MoveZeroes {
         if (nums == null || nums.length == 0) {
             return;
         }
+        int[] result = new int[nums.length];
         int i = 0;
         for(int n : nums) {
             if (n != 0) {
-                nums[i++] = n;
+                result[i++] = n;
             }
         }
-        while(i < nums.length) {
-            nums[i++] = 0;
+
+        for(i = 0; i < nums.length; i++) {
+            nums[i] = result[i];
         }
     }
 }
