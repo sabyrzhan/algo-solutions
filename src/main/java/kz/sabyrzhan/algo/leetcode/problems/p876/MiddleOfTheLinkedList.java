@@ -1,28 +1,16 @@
 package kz.sabyrzhan.algo.leetcode.problems.p876;
 
 public class MiddleOfTheLinkedList {
-    public static void main(String[] args) {
-        MiddleOfTheLinkedList p = new MiddleOfTheLinkedList();
-        p.execute();
-    }
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
 
-    private void execute() {
-        ListNode root = new ListNode(1);
-        root.next = new ListNode(2);
-        ListNode next = root.next;
-        next.next = new ListNode(3);
-        next = next.next;
-        next.next = new ListNode(4);
-        next = next.next;
-        next.next = new ListNode(5);
-        next = next.next;
-        next.next = new ListNode(6);
-        next = next.next;
-        next.next = new ListNode(7);
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
 
-        Solution s = new Solution();
-        ListNode result = s.middleNode(root);
-        System.out.println(result);
+        return slow;
     }
 
     public class ListNode {
@@ -33,20 +21,6 @@ public class MiddleOfTheLinkedList {
         @Override
         public String toString() {
             return val + " -> " + next;
-        }
-    }
-
-    class Solution {
-        public ListNode middleNode(ListNode head) {
-            ListNode slow = head;
-            ListNode fast = head;
-
-            while(fast != null && fast.next != null) {
-                slow = slow.next;
-                fast = fast.next.next;
-            }
-
-            return slow;
         }
     }
 }
