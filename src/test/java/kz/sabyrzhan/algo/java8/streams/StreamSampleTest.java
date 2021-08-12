@@ -6,7 +6,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -17,7 +22,7 @@ public class StreamSampleTest {
     @Test
     public void testIntStream() {
         int sum = IntStream.rangeClosed(1, 100_000).sum();
-        int expected = 100_000 * (1 + 100_000)/2;
+        int expected = 100_000 * (1 + 100_000) >> 1;
         assertEquals(expected, sum);
 
         int min = IntStream.of(100, 200, 1321, 2, 0, 132).min().getAsInt();
@@ -39,7 +44,43 @@ public class StreamSampleTest {
 
     @Test
     public void testSortingStreams() {
-        User[] users = {
+        Comparator<User> userComparator = Comparator.comparing(User::getName).thenComparing(User::getSurname);
+        List<User> collect = Stream.of(createUsers()).sorted(userComparator).collect(Collectors.toList());
+        collect.forEach(user -> System.out.printf("%10s%10s%n", user.getName(), user.getSurname()));
+    }
+
+    @Test
+    public void testGroupingOfStreams() {
+        Map<String, List<User>> mapCollect = Stream.of(createUsers()).collect(Collectors.groupingBy(User::getName));
+        mapCollect.forEach((s, users) -> {
+            System.out.println(s);
+            users.forEach(user -> System.out.printf("%10s%10s%n", user.getName(), user.getSurname()));
+        });
+    }
+
+    @Test
+    public void testToMapOfStreams() {
+        System.out.println("All users");
+        // if we have duplicate keys, we have to create merger functions or just return the last one
+        BinaryOperator<User> merger = (user, user2) -> user2;
+        Collector<User, ?, Map<String, User>> collector = Collectors.toMap(User::getName, Function.identity(), merger);
+        Map<String, User> collect = Stream.of(createUsers()).collect(collector);
+        collect.forEach((s, user) -> System.out.printf("%10s%10s%n", user.getName(), user.getSurname()));
+    }
+
+    @Test
+    public void testFlatMapOfStreams() {
+        AtomicInteger i = new AtomicInteger(0);
+        Stream.of(createUsers()).flatMap(user -> {
+            // Generate stream of numbers
+            IntStream intStream = IntStream.rangeClosed(i.get(), i.get() + 10);
+            i.addAndGet(500);
+            return intStream.boxed();
+        }).forEach(integer -> System.out.println(" -> " + integer));
+    }
+
+    private static User[] createUsers() {
+        return new User[]{
                 User.builder().age(10).name("John").surname("Allen").build(),
                 User.builder().age(24).name("Marcus").surname("Oran").build(),
                 User.builder().age(19).name("Wainer").surname("Aromis").build(),
@@ -47,9 +88,6 @@ public class StreamSampleTest {
                 User.builder().age(33).name("John").surname("Burns").build(),
                 User.builder().age(63).name("John").surname("Wane").build()
         };
-        Comparator<User> userComparator = Comparator.comparing(User::getName).thenComparing(User::getSurname).reversed();
-        List<User> collect = Stream.of(users).sorted(userComparator).collect(Collectors.toList());
-        collect.forEach(user -> System.out.printf("%10s%10s%n", user.getName(), user.getSurname()));
     }
 
     @Data
