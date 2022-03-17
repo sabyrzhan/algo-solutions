@@ -18,9 +18,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StreamSampleTest {
+class StreamSampleTest {
     @Test
-    public void testIntStream() {
+    void testIntStream() {
         int sum = IntStream.rangeClosed(1, 100_000).sum();
         int expected = 100_000 * (1 + 100_000) >> 1;
         assertEquals(expected, sum);
@@ -43,14 +43,14 @@ public class StreamSampleTest {
     }
 
     @Test
-    public void testSortingStreams() {
+    void testSortingStreams() {
         Comparator<User> userComparator = Comparator.comparing(User::getName).thenComparing(User::getSurname);
-        List<User> collect = Stream.of(createUsers()).sorted(userComparator).collect(Collectors.toList());
+        List<User> collect = Stream.of(createUsers()).sorted(userComparator).toList();
         collect.forEach(user -> System.out.printf("%10s%10s%n", user.getName(), user.getSurname()));
     }
 
     @Test
-    public void testGroupingOfStreams() {
+    void testGroupingOfStreams() {
         Map<String, List<User>> mapCollect = Stream.of(createUsers()).collect(Collectors.groupingBy(User::getName));
         mapCollect.forEach((s, users) -> {
             System.out.println(s);
@@ -59,7 +59,7 @@ public class StreamSampleTest {
     }
 
     @Test
-    public void testToMapOfStreams() {
+    void testToMapOfStreams() {
         System.out.println("All users");
         // if we have duplicate keys, we have to create merger functions or just return the last one
         BinaryOperator<User> merger = (user, user2) -> user2;
@@ -69,7 +69,7 @@ public class StreamSampleTest {
     }
 
     @Test
-    public void testFlatMapOfStreams() {
+    void testFlatMapOfStreams() {
         AtomicInteger i = new AtomicInteger(0);
         Stream.of(createUsers()).flatMap(user -> {
             // Generate stream of numbers
