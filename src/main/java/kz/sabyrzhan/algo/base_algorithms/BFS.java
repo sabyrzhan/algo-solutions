@@ -2,27 +2,30 @@ package kz.sabyrzhan.algo.base_algorithms;
 
 import kz.sabyrzhan.algo.data_structures.NodeWithLeftAndRight;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class BFS {
-    public static void main(String[] args) {
-        NodeWithLeftAndRight root = new NodeWithLeftAndRight(1);
-        root.setLeft(new NodeWithLeftAndRight(2));
-        root.setRight(new NodeWithLeftAndRight(3));
+    public static List<Integer> visitAll(NodeWithLeftAndRight root) {
+        Map<NodeWithLeftAndRight, Boolean> visited = new HashMap<>();
+        List<Integer> values = new ArrayList<>();
+        Queue<NodeWithLeftAndRight> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            var node = queue.poll();
+            if (!visited.containsKey(node)) {
+                visited.put(root, true);
+                values.add(node.getValue());
+                if (node.getLeft() != null) {
+                    queue.add(node.getLeft());
+                }
 
-        root.getLeft().setLeft(new NodeWithLeftAndRight(4));
-        root.getLeft().setRight(new NodeWithLeftAndRight(5));
+                if (node.getRight() != null) {
+                    queue.add(node.getRight());
+                }
+            }
+        }
 
-        root.getRight().setLeft(new NodeWithLeftAndRight(6));
-        root.getRight().setRight(new NodeWithLeftAndRight(7));
-
-        root.getRight().getLeft().setRight(new NodeWithLeftAndRight(8));
-
-        System.out.println(root);
-
-        int value = identifyLevel(root, 8);
-        System.out.println(value);
+        return values;
     }
 
     public static int search(NodeWithLeftAndRight root, int value) {
